@@ -1,11 +1,11 @@
 %%
 %Initializing
-addpath(genpath('Hu Moment'), 'iterativeclustering','loadEMimages','naivebayes','ruecs')
+addpath(genpath('Hu Moments'), 'iterativeclustering','loadEMimages','naivebayes','ruecs')
 %%
 %Find all images from a folder, make random split if desired
 folder = uigetdir;
 directs = dir([folder '\*.dm4']);
-names_all = {directs.name};
+names = {directs.name};
 %%
 %Load images can calculated features
 image = {};
@@ -103,11 +103,11 @@ end
 resolved_features_norm = (resolved_features-mean(features))./...
     max(resolved_features-mean(features));
 
-class_idx_max = class_idx_em(:, idx_max);
-params_max = params_all{idx_max};
+class_idx_max = step_results.step1.classes;
+[mu_max, sigma_max] = compute_distribution(step_results.step1.data, class_idx_max);
 
 class_idx_resolved = assignlabels(resolved_features_norm,...
-    params_max.mu, params_max.sigma);
+    mu_max, sigma_max);
 
 for j=1:max(class_idx_max)
     figure('NumberTitle', 'off', 'Name', ['Class' num2str(j)]);
