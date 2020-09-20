@@ -68,9 +68,9 @@ parfor i = 1:N
        resolved_codes = [resolved_codes; overlapping_codes(i)*ones(length(markers_dil{i}), 1)];
    end
 end
-
-figure
-montage(overlay)
+% 
+% figure
+% montage(overlay)
 
 %%
 %Computing features for resolved particles
@@ -109,15 +109,15 @@ class_idx_max = step_results.step1.classes;
 class_idx_resolved = assignlabels(resolved_features_norm,...
     mu_max, sigma_max);
 
-for j=1:max(class_idx_max)
-    figure('NumberTitle', 'off', 'Name', ['Class' num2str(j)]);
-    montage(resolved_particles(class_idx_resolved==j), 'BorderSize', [1 1])
-    figure('NumberTitle', 'off', 'Name', ['Class' num2str(j)]);
-    for i = 1:size(features, 2)
-        subplot(2,2,i);
-        hist(resolved_features(class_idx_resolved==j,i),50);
-    end
-end
+% for j=1:max(class_idx_max)
+%     figure('NumberTitle', 'off', 'Name', ['Class' num2str(j)]);
+%     montage(resolved_particles(class_idx_resolved==j), 'BorderSize', [1 1])
+%     figure('NumberTitle', 'off', 'Name', ['Class' num2str(j)]);
+%     for i = 1:size(features, 2)
+%         subplot(2,2,i);
+%         hist(resolved_features(class_idx_resolved==j,i),50);
+%     end
+% end
 
 particles_all = [particles_plot resolved_particles'];
 class_idx_all = [class_idx_max; class_idx_resolved];
