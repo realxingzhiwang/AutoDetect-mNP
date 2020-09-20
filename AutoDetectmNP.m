@@ -5,7 +5,6 @@ addpath(genpath('Hu Moment'), 'iterativeclustering','loadEMimages','naivebayes',
 %Find all images from a folder, make random split if desired
 folder = uigetdir;
 directs = dir([folder '\*.dm4']);
-%directs = dir([folder '\*.tif']);
 names_all = {directs.name};
 %%
 %Load images can calculated features
@@ -14,22 +13,18 @@ image_bw = {};
 features_org = [];
 particles = {};
 particles_list = {};
-% particles_full = {};
 particles_org = {};
 centroids = [];
 orientation = {};
 moments = [];
 codes = [];
 [~, ~, ~, ~, unit] = loadEMimages(fullfile(folder,names{1}));
-for i = 1:length(names)%selectedims(1:20)
+for i = 1:length(names)
     [image{i}, image_bw{i}, features_ite, particles_ite, unit, particles_org_ite, moments_ite, centroids_ite, orientation_ite]...
         = loadEMimages(fullfile(folder,names{i}));
     features_org = [features_org; features_ite];
     particles = [particles particles_ite{1}];
     particles_list = [particles_list particles_ite{2}];
-%     for j = 1:length(particles_ite{2})
-%         particles_full = [particles_full masking(image_bw{i}, particles_ite{2}{j})];
-%     end
     particles_org = [particles_org particles_org_ite];
     moments = [moments; moments_ite];
     centroids = [centroids; centroids_ite];
@@ -56,16 +51,12 @@ features_norm = (features-mean(features))./max(features-mean(features));
 %%
 %rUECS
 particles_ol = particles(overlapping);
-%particles_ol = particles_plot(class_idx_em==2);
-%particles_ol = all_ol;
 N = length(particles_ol);
 Img = cell(N, 1);
 markers = cell(N, 1);
 cnt = zeros(N, 1);
 overlay = cell(size(markers));
 layers = cell(size(markers));
-%outlines_x = cell(size(markers));
-%outlines_y = cell(size(markers));
 markers_dil = cell(size(markers));
 overlapping_codes = codes(overlapping);
 resolved_codes = [];
