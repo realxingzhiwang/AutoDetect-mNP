@@ -54,6 +54,34 @@ features_norm = (features-mean(features))./max(features-mean(features));
 [results, step_results] = iterativeclustering(features_norm, 5);
 
 %%
+%rUECS
+particles_ol = particles(overlapping);
+%particles_ol = particles_plot(class_idx_em==2);
+%particles_ol = all_ol;
+N = length(particles_ol);
+Img = cell(N, 1);
+markers = cell(N, 1);
+cnt = zeros(N, 1);
+overlay = cell(size(markers));
+layers = cell(size(markers));
+%outlines_x = cell(size(markers));
+%outlines_y = cell(size(markers));
+markers_dil = cell(size(markers));
+overlapping_codes = codes(overlapping);
+resolved_codes = [];
+
+parfor i = 1:N
+   markers{i} = ruecs(particles_ol{i}, (10/unit{1})^2);
+   [markers_dil{i}, overlay{i}] = dilmarkers(markers{i}, particles_ol{i});
+   if ~isempty(markers_dil{i})
+       resolved_codes = [resolved_codes; overlapping_codes(i)*ones(length(markers_dil{i}), 1)];
+   end
+end
+
+figure
+montage(overlay)
+
+%%
 %Computing features for resolved particles
 
 scale_markers = unit{1};
