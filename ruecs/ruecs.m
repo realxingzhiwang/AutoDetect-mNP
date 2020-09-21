@@ -3,7 +3,7 @@ function [markers] = ruecs(Img, area_threshold, cnt)
 %    IEEE Trans. Pattern Anal. Mach. Intell. 2013, 35, 669 - 680.
 %   Recursive version
 
-%ruecs Recursive ultimat erosion of convex shapes
+%ruecs Recursive ultimate erosion of convex shapes
 %   [ markers ] = ruecs(img) returns all convex markers and their
 %   corresponding number of itrations of erosions. To begin, input Img as a
 %   logical matrix of an image of overlapping particles, and area_threshold
