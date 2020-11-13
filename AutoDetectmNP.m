@@ -1,12 +1,12 @@
 %%
 %Initializing
-addpath(genpath('Hu Moment'), 'iterativeclustering','loadEMimages','naivebayes','ruecs')
+addpath(genpath('Hu Moments'), 'iterativeclustering','loadEMimages','naivebayes','ruecs')
 %%
 %Find all images from a folder, make random split if desired
 folder = uigetdir;
 directs = dir([folder '\*.dm4']);
 %directs = dir([folder '\*.tif']);
-names_all = {directs.name};
+names = {directs.name};
 %%
 %Load images can calculated features
 image = {};

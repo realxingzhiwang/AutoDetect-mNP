@@ -43,6 +43,7 @@ end
 
 
 area_threshold = scale^2*0.5e4/10;
+%area_threshold = 100;
 %image_16bit = imadjust(image_16bit);
 % image_8bit = imread(file);
 % image_8bit = uint8(conv2(image_8bit(1:1536,1:1536), 1/25*ones(5)));
