@@ -38,9 +38,9 @@ end
 
 
 
-if count>=1e3
-    disp('Maximum number of iterations reached.')
-end
+% if count>=1e3
+%     disp('Maximum number of iterations reached.')
+% end
 
 params = struct;
 params.mu = mu;

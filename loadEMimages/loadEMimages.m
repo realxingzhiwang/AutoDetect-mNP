@@ -42,7 +42,7 @@ else
 end
 
 
-area_threshold = scale^2*0.5e4/10;
+area_threshold = scale^2*0.5e4;
 %area_threshold = 100;
 %image_16bit = imadjust(image_16bit);
 % image_8bit = imread(file);
@@ -82,7 +82,9 @@ image_8bit = imadjust(image_8bit); %Adjust contrast
 % end
 
 BW_fill_filter = imagekmeans(image_8bit);
-%BW_fill_filter = combinedthresh(image_8bit);
+%disp('Using imagekmeans')
+% BW_fill_filter = combinedthresh(image_8bit);
+% disp('Using combinedthresh')
 %BW_fill_filter = bwmorph(BW_fill_filter,'hbreak');
 %BW_fill_filter = ~BW_fill_filter;
 
