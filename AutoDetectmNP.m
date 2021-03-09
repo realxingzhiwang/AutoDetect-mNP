@@ -1,6 +1,6 @@
 %%
 %Initializing
-addpath(genpath('Hu Moments'), 'iterativeclustering','loadEMimages','naivebayes','ruecs')
+addpath(genpath('Hu Moments'), 'iterativeclustering',genpath('loadEMimages'),'naivebayes','ruecs')
 %%
 %Find all images from a folder, make random split if desired
 folder = uigetdir;
