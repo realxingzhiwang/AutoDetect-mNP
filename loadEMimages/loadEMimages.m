@@ -41,9 +41,9 @@ else
     unit = varargin{3};
 end
 
-
-area_threshold = scale^2*0.5e4;
-%area_threshold = 100;
+%image_32bit = image_32bit(round(length(image_32bit)*0.33):end, round(length(image_32bit)*0.33):end);
+%area_threshold = scale^2*0.5e4;
+area_threshold = 10;
 %image_16bit = imadjust(image_16bit);
 % image_8bit = imread(file);
 % image_8bit = uint8(conv2(image_8bit(1:1536,1:1536), 1/25*ones(5)));
@@ -55,9 +55,9 @@ area_threshold = scale^2*0.5e4;
 % end
 
 %image_16bit = imfilter(image_16bit,fspecial('gaussian'));
-if length(size(image_32bit))>2 %Conversion from rgb to greyscale
-    image_32bit = rgb2gray(image_32bit);
-end
+% if length(size(image_32bit))>2 %Conversion from rgb to greyscale
+%     image_32bit = rgb2gray(image_32bit);
+% end
 % if max(image_32bit(:))>257 %Conversion from int16 to int8
 %     image_8bit = uint8(conv2(image_32bit/512, 1/25*ones(5))); %The factor 512 can be tuned based on the dataset
 % else
@@ -82,7 +82,7 @@ image_8bit = imadjust(image_8bit); %Adjust contrast
 % end
 
 BW_fill_filter = imagekmeans(image_8bit);
-%disp('Using imagekmeans')
+disp('Using imagekmeans')
 % BW_fill_filter = combinedthresh(image_8bit);
 % disp('Using combinedthresh')
 %BW_fill_filter = bwmorph(BW_fill_filter,'hbreak');
@@ -134,7 +134,9 @@ if isempty(particles)
     end
     
     if nargout > 4
-            varargout(5:end) = cell(size(varargout(5:end)));
+            for n = 5:nargout
+                varargout{n} = {};
+            end
     end
     
     return

@@ -5,7 +5,7 @@ addpath(genpath('Hu Moments'), 'iterativeclustering',genpath('loadEMimages'),'na
 %Find all images from a folder, make random split if desired
 folder = uigetdir;
 directs = dir([folder '\*.dm4']);
-%directs = dir([folder '\*.tif']); Defualt input format is .dm4
+%directs = dir([folder '\*.png']); %Defualt input format is .dm4
 names = {directs.name};
 %%
 %Load images can calculated features
@@ -19,7 +19,7 @@ particles = {};
 % orientation = {};
 moments = [];
 codes = [];
-[~, ~, ~, ~, unit] = loadEMimages(fullfile(folder,names{1}));
+[~, ~, ~, ~, unit] = loadEMimages(fullfile(folder,names{1}));%,@loadtiff);
 for i = 1:length(names)
     [image{i}, image_bw{i}, features_ite, particles_ite, unit, particles_org_ite, moments_ite, centroids_ite, orientation_ite]...
         = loadEMimages(fullfile(folder,names{i})); %Add '@loadtiff' as the second input if loading non .dm4 format is desired
@@ -36,7 +36,7 @@ end
 %%
 %Filtering non-convex particles
 nonoverlapping =...based on solidity and convexity
-    features_org(:,end)>0.9 & features_org(:,7)>0.95;%0.8/0.9
+    features_org(:,end)>0.8 & features_org(:,7)>0.9;%0.9/0.95
 overlapping = ~nonoverlapping;
 
 features_nonoverlapping = features_org(nonoverlapping, :);
@@ -84,6 +84,7 @@ end
 
 resolved_features = zeros(length(resolved_markers), 4);
 resolved_particles = cell(length(resolved_markers), 1);
+resolved_axis = zeros(length(resolved_markers), 2);
 
 parfor ite = 1:length(resolved_markers)
     props = regionprops(resolved_markers{ite},'Image', ...
@@ -95,7 +96,9 @@ parfor ite = 1:length(resolved_markers)
         [props.MajorAxisLength]'./[props.MinorAxisLength]', ...
         1./(resolved_moments(1)*2*pi)]);
     resolved_particles{ite} = props.Image;
+    resolved_axis(ite, :) = [[props.MajorAxisLength],[props.MinorAxisLength]];
 end
+
 
 %%
 %Classifying resolved particles
@@ -112,7 +115,7 @@ class_idx_resolved = assignlabels(resolved_features_norm,...
 particles_all = [particles_plot resolved_particles'];
 features_all = [features_nonoverlapping; resolved_features];
 class_idx_all = [class_idx_max; class_idx_resolved];
-codes_all = [codes; resolved_codes];
+codes_all = [codes(nonoverlapping); resolved_codes];
 
 %% Summarizing output data
 summary = struct;
