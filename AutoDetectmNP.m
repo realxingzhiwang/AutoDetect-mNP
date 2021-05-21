@@ -96,7 +96,7 @@ parfor ite = 1:length(resolved_markers)
         [props.MajorAxisLength]'./[props.MinorAxisLength]', ...
         1./(resolved_moments(1)*2*pi)]);
     resolved_particles{ite} = props.Image;
-    resolved_axis(ite, :) = [[props.MajorAxisLength],[props.MinorAxisLength]];
+    resolved_axis(ite, :) = [[props.MajorAxisLength],[props.MinorAxisLength]]*scale_markers;
 end
 
 
