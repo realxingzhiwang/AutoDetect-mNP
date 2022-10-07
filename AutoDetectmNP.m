@@ -4,7 +4,7 @@ addpath(genpath('Hu Moments'), 'iterativeclustering',genpath('loadEMimages'),'na
 %%
 %Find all images from a folder, make random split if desired
 folder = uigetdir;
-directs = dir([folder '\*.dm4']);
+directs = dir(fullfile(folder, '*.dm4'));
 %directs = dir([folder '\*.png']); %Defualt input format is .dm4
 names = {directs.name};
 %%
