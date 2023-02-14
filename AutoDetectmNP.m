@@ -106,7 +106,8 @@ end
 resolved_features_norm = (resolved_features-mean(features_nonoverlapping))./...
     max(resolved_features-mean(features_nonoverlapping));
 
-class_idx_max = step_results.step1.classes;
+%class_idx_max = step_results.step1.classes;
+class_idx_max = results.classes;
 [mu_max, sigma_max] = compute_distribution(step_results.step1.data, class_idx_max);
 
 class_idx_resolved = assignlabels(resolved_features_norm,...

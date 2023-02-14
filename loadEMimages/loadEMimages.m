@@ -81,10 +81,10 @@ image_8bit = imadjust(image_8bit); %Adjust contrast
 %        BW_sections(:, :, i));
 % end
 
-BW_fill_filter = imagekmeans(image_8bit);
-disp('Using imagekmeans')
-% BW_fill_filter = combinedthresh(image_8bit);
-% disp('Using combinedthresh')
+%BW_fill_filter = imagekmeans(image_8bit);
+%disp('Using imagekmeans')
+BW_fill_filter = combinedthresh(image_8bit);
+disp('Using combinedthresh')
 %BW_fill_filter = bwmorph(BW_fill_filter,'hbreak');
 %BW_fill_filter = ~BW_fill_filter;
 
