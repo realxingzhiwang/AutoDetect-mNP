@@ -19,7 +19,7 @@ while true
         current_files = filenames;
         pause(1);
         path = fullfile(file, new_files{:});
-        [image, image_bw, features] = loadEMimages(path);
+        [image, image_bw, features] = loadEMimages(path, @ReadDMFile, @combinedthresh);
         figure('NumberTitle', 'off', 'Name', new_files{:})
         subplot(1,2,1)
         imshow(image)

@@ -19,7 +19,7 @@ particles = {};
 % orientation = {};
 moments = [];
 codes = [];
-[~, ~, ~, ~, unit] = loadEMimages(fullfile(folder,names{1}));%,@loadtiff);
+[~, ~, ~, ~, unit] = loadEMimages(fullfile(folder,names{1}), @ReadDMFile, @imagekmeans); %@ReadDMFile for dm4, @loadtiff for other formats; @imagekmeans for mNPs, @combinedthresh for QDs, @identity if inputs are binary images
 for i = 1:length(names)
     [image{i}, image_bw{i}, features_ite, particles_ite, unit, particles_org_ite, moments_ite, centroids_ite, orientation_ite]...
         = loadEMimages(fullfile(folder,names{i})); %Add '@loadtiff' as the second input if loading non .dm4 format is desired
@@ -136,9 +136,10 @@ colors = [68 133 255;
     
 handles = cell(1, 4);
 feature_names = {'Area', 'Eccentricity', 'Aspect Ratio', 'Circularity'};
-classes_f = summary.classification;
-features_f = summary.features;
-particles_f = summary.particle_shapes;
+summary_f = summary;
+classes_f = summary_f.classification;
+features_f = summary_f.features;
+particles_f = summary_f.particle_shapes;
 
 for p = 1:4
     
