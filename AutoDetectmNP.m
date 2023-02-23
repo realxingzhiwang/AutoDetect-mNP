@@ -132,12 +132,14 @@ colors = [68 133 255;
         255 68 133;
         255 157 37;
         157 37 255;
-        37 255 157]/255*0.9;
+        37 255 157;
+        176 176 176
+        117 138 155]/255*0.9;
     
 handles = cell(1, 4);
 feature_names = {'Area', 'Eccentricity', 'Aspect Ratio', 'Circularity'};
 summary_f = summary;
-classes_f = summary_f.classification;
+classes_f = step_results.step2.classes;%summary_f.classification;
 features_f = summary_f.features;
 particles_f = summary_f.particle_shapes;
 
