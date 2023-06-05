@@ -6,6 +6,7 @@ function [mu, sigma, pi] = compute_distribution(data, labels)
 %   naivebayes.
 
 K = length(unique(labels));
+%K = max(labels);
 mu = zeros(K, size(data, 2));
 sigma = zeros(K, size(data, 2));
 pi = zeros(K, 1);

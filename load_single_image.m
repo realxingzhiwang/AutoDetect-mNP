@@ -3,7 +3,7 @@ addpath(genpath('Hu Moments'), 'iterativeclustering',genpath('loadEMimages'),'na
 %[m, sx, units]=ReadDMFile(fullfile(path, file));
 %imshow(uint8(m/256))
 %%
-[image_test, image_bw_test, features_test, particles_all_test, unit_test, particles_org_test, moments_test, centroids_test] = loadEMimages(fullfile(path_test, file_test),@loadtiff);
+[image_test, image_bw_test, features_test, particles_all_test, unit_test, particles_org_test, moments_test, centroids_test] = loadEMimages(fullfile(path_test, file_test),@ReadDMFile,@combinedthresh);
 %image = imread(fullfile(path, file));
 %image_pooled = averagepooling(image, [5 5]);
 %image_conv = uint8(conv2(image, 1/25*ones(5)));

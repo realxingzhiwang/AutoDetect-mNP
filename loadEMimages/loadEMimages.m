@@ -50,8 +50,9 @@ end
 [image_32bit, scale, unit] = loadimage(file);
 
 %image_32bit = image_32bit(round(length(image_32bit)*0.33):end, round(length(image_32bit)*0.33):end);
+%area_threshold = (10/scale)^2;
 %area_threshold = scale^2*0.5e4;
-area_threshold = 10;
+area_threshold = 100;
 %image_16bit = imadjust(image_16bit);
 % image_8bit = imread(file);
 % image_8bit = uint8(conv2(image_8bit(1:1536,1:1536), 1/25*ones(5)));
@@ -117,10 +118,11 @@ BW_fill_filter = thresh_method(image_8bit);
 regions = regionprops(BW_fill_filter, 'Area', 'BoundingBox',...
     'Eccentricity', 'Extent', 'MajorAxisLength', 'MinorAxisLength',...
     'Solidity', 'Perimeter', 'Centroid', 'Image', 'ConvexHull',...
-    'Orientation', 'PixelIdxList'); %Compute features
+    'Orientation', 'PixelIdxList', "BoundingBox"); %Compute features
 
 particles = {regions.Image};
-particles_full = {regions.PixelIdxList};
+%particles_full = {regions.PixelIdxList};
+particles_full = {regions.BoundingBox};
 centroids_temp = [regions.Centroid];
 centroids = reshape(centroids_temp, 2, length(centroids_temp)/2)';
 
@@ -201,13 +203,16 @@ features = double([[regions.Area]'*scale^2 ... area (nm^2)
     convexperi./[regions.Perimeter]' ... convexity
     ]);
 
+area_filter = features(:,1)>area_threshold;
+%[area_mu, area_sigma] = compute_distribution(features(area_filter,1), ones(size(features(area_filter,1))));
+%area_filter = area_filter & (features(:,1) < (area_mu + 2*area_sigma));
 
-particles = particles(features(:,1)>area_threshold);
-particles_full = particles_full(features(:,1)>area_threshold);
-particles_org = particles_org(features(:,1)>area_threshold);
-moments = moments(features(:,1)>area_threshold,:);
-features = features(features(:,1)>area_threshold,:);
-centroids = centroids(features(:,1)>area_threshold,:);
+particles = particles(area_filter);
+particles_full = particles_full(area_filter);
+particles_org = particles_org(area_filter);
+moments = moments(area_filter,:);
+features = features(area_filter,:);
+centroids = centroids(area_filter,:);
 
 
 if nargout ~= 0
