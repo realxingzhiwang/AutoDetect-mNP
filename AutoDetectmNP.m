@@ -7,6 +7,7 @@ folder = uigetdir;
 directs = dir(fullfile(folder, '*.dm4'));
 %directs = dir([folder '\*.png']); %Defualt input format is .dm4
 names = {directs.name};
+data_name = inputdlg("Input a name for the dataset:", "Data name", [1 45], names(1));
 %%
 %Load images can calculated features
 image = {};
@@ -20,11 +21,12 @@ particles_list = {};
 moments = [];
 codes = [];
 image_loading = @ReadDMFile; %@ReadDMFile for dm4, @loadtiff for other formats
-image_segmentation = @imagekmeans; %@imagekmeans for mNPs, @combinedthresh for QDs, @identity if inputs are binary images
+image_segmentation = @combinedthresh; %@imagekmeans for mNPs, @combinedthresh for QDs, @identity if inputs are binary images
+area_threshold = 10;
 [~, ~, ~, ~, unit] = loadEMimages(fullfile(folder,names{1}), image_loading, image_segmentation);
 for i = 1:length(names)
     [image{i}, image_bw{i}, features_ite, particles_ite, unit, particles_org_ite, moments_ite, centroids_ite, orientation_ite]...
-        = loadEMimages(fullfile(folder,names{i}), image_loading, image_segmentation); 
+        = loadEMimages(fullfile(folder,names{i}), image_loading, image_segmentation, area_threshold); 
     features_org = [features_org; features_ite];
     particles = [particles particles_ite{1}];
     particles_list = [particles_list particles_ite{2}];
@@ -134,6 +136,7 @@ codes_all = [codes(nonoverlapping); resolved_codes];
 particles_for_overlay = [particles_plot resolved_markers];
 particles_list_all = [particles_list_plot resolved_list];
 
+
 %% Summarizing output data
 summary = struct;
 summary.particle_shapes = particles_all;
@@ -142,7 +145,7 @@ summary.classification = class_idx_all;
 summary.original_images = image;
 summary.binarized_images = image_bw;
 summary.codes = codes_all;
-summary.data_name = names{1};
+summary.data_name = data_name;
 
 %% Results visualization
 colors = [68 133 255;
@@ -261,6 +264,9 @@ parfor i = 1:length(summary.original_images)
     image_w_class = summary.original_images{i}*0.75 + uint8((cat(3, R_layer, G_layer, B_layer))*255);
     imwrite(image_w_class, [image_w_class_dir names{i} '.png']);
 end
+
+%%
+save(['D:\Wang_data\results_shape_classification\' summary.data_name{1}], 'summary', 'particles_for_overlay', 'particles_list_all','results','step_results','-v7.3')
 
 %%
 function [ masked_img ] = masking(img, region)

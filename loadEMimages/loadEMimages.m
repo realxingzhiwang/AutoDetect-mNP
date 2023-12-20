@@ -24,18 +24,26 @@ function [image_8bit, varargout] = loadEMimages(varargin)
 %   N-by-7 matrix with each row being the 7 Hu's moment invariant
 %   calculated for an isolated partcile.
 
-if nargin==3
+if nargin==4
     file = varargin{1};
     loadimage = varargin{2};
     thresh_method = varargin{3};
+    area_threshold = varargin{4};
+elseif nargin==3
+    file = varargin{1};
+    loadimage = varargin{2};
+    thresh_method = varargin{3};
+    area_threshold = 100;
 elseif nargin==2
     file = varargin{1};
     loadimage = varargin{2};
     thresh_method = @imagekmeans;
+    area_threshold = 100;
 elseif nargin==1
     file = varargin{1};
     loadimage = @ReadDMFile;
     thresh_method = @imagekmeans;
+    area_threshold = 100;
 end
 
 
@@ -52,7 +60,8 @@ end
 %image_32bit = image_32bit(round(length(image_32bit)*0.33):end, round(length(image_32bit)*0.33):end);
 %area_threshold = (10/scale)^2;
 %area_threshold = scale^2*0.5e4;
-area_threshold = 100;
+
+%area_threshold = 10;
 %image_16bit = imadjust(image_16bit);
 % image_8bit = imread(file);
 % image_8bit = uint8(conv2(image_8bit(1:1536,1:1536), 1/25*ones(5)));
