@@ -9,6 +9,7 @@ function inv_moments = Hu_Moments(eta)
 
 
 %Calculation of various invariant Hu's moments
+inv_moments = zeros(1,7);
 inv_moments(1) = eta(3,1) + eta(1,3);
 inv_moments(2) = (eta(3,1) - eta(1,3))^2 + (4*eta(2,2)^2);
 inv_moments(3) = (eta(4,1) - 3*eta(2,3))^2 + (3*eta(3,2) - eta(1,4))^2;

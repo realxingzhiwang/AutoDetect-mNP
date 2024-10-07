@@ -4,8 +4,8 @@ addpath(genpath('Hu Moments'), 'iterativeclustering',genpath('loadEMimages'),'na
 %%
 %Find all images from a folder, make random split if desired
 folder = uigetdir;
-directs = dir(fullfile(folder, '*.dm4'));
-%directs = dir([folder '\*.png']); %Defualt input format is .dm4
+%directs = dir(fullfile(folder, '*.dm4'));
+directs = dir([folder '\*.tif']); %Defualt input format is .dm4
 names = {directs.name};
 data_name = inputdlg("Input a name for the dataset:", "Data name", [1 45], names(1));
 %%
@@ -20,8 +20,8 @@ particles_list = {};
 % orientation = {};
 moments = [];
 codes = [];
-image_loading = @ReadDMFile; %@ReadDMFile for dm4, @loadtiff for other formats
-image_segmentation = @combinedthresh; %@imagekmeans for mNPs, @combinedthresh for QDs, @identity if inputs are binary images
+image_loading = @loadtiff; %@ReadDMFile for dm4, @loadtiff for other formats
+image_segmentation = @identity; %@imagekmeans for mNPs, @combinedthresh for QDs, @identity if inputs are binary images
 area_threshold = 10;
 [~, ~, ~, ~, unit] = loadEMimages(fullfile(folder,names{1}), image_loading, image_segmentation);
 for i = 1:length(names)
@@ -230,7 +230,8 @@ ax.Colormap = colors(1:max(classes_f), :);
 
 %%
 %image_w_class = cell(size(summary.binarized_images));
-image_w_class_dir = 'D:\Wang_data\image_w_class\';
+%image_w_class_dir = 'D:\Wang_data\image_w_class\';
+image_w_class_dir = 'exports\overlays\';
 classes_for_overlay = summary.classification;
 parfor i = 1:length(summary.original_images)
 
@@ -266,7 +267,7 @@ parfor i = 1:length(summary.original_images)
 end
 
 %%
-save(['D:\Wang_data\results_shape_classification\' summary.data_name{1}], 'summary', 'particles_for_overlay', 'particles_list_all','results','step_results','-v7.3')
+save(['export\' summary.data_name{1}], 'summary', 'particles_for_overlay', 'particles_list_all','results','step_results','-v7.3')
 
 %%
 function [ masked_img ] = masking(img, region)

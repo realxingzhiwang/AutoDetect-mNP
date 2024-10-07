@@ -155,8 +155,12 @@ if isempty(particles)
     end
     
     if nargout > 4
-            for n = 5:nargout
-                varargout{n} = {};
+        varargout{5} = {};
+    end
+
+    if nargout > 5
+            for n = 6:nargout
+                varargout{n} = [];
             end
     end
     

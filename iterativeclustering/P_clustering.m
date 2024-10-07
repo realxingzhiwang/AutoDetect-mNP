@@ -10,7 +10,7 @@ P_mat = cell(length(K_range), N_ite);
 P_max = ones(length(K_range), N_ite);
 class_indices = cell(length(K_range), N_ite);
 
-parfor k = K_range
+for k = K_range
     for cnt = 1:N_ite
         class_idx_temp = kmeans(data, k);
         [class_idx_em_temp, params] =...
